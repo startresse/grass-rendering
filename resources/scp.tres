@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="ShaderCommonParameters" load_steps=2 format=3 uid="uid://bbcshsxkrp5gn"]
+
+[ext_resource type="Script" path="res://scripts/scp.gd" id="1_3xcgv"]
+
+[resource]
+script = ExtResource("1_3xcgv")
+wind_strength = 0.0

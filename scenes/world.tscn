@@ -1,15 +1,17 @@
-[gd_scene load_steps=18 format=3 uid="uid://bx60fdxjp1q1j"]
+[gd_scene load_steps=19 format=3 uid="uid://bx60fdxjp1q1j"]
 
 [ext_resource type="Environment" uid="uid://kka33mpehvxe" path="res://nodes/environment.tres" id="1_71j4m"]
 [ext_resource type="Shader" uid="uid://62k14gwjvuvn" path="res://shader/ground.gdshader" id="2_i7141"]
 [ext_resource type="Shader" uid="uid://s7pywmrk25qb" path="res://shader/grass.gdshader" id="2_qfnet"]
 [ext_resource type="MultiMesh" uid="uid://tlsrc3txxlgr" path="res://resources/grass_multimesh_detailed.tres" id="3_i7141"]
 [ext_resource type="Script" uid="uid://by5if8wljpkhl" path="res://scripts/grass_object_position.gd" id="4_4mrxx"]
+[ext_resource type="Texture2D" uid="uid://o7cbkje6jceq" path="res://resources/wind_noise.tres" id="4_7r4gi"]
 [ext_resource type="Texture2D" uid="uid://bwi34bo6hgm8r" path="res://resources/patch_noise.tres" id="4_i7141"]
 [ext_resource type="MultiMesh" uid="uid://cg3jrnjjh5ufv" path="res://resources/grass_multimesh_simple.tres" id="5_7r4gi"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i7141"]
 albedo_color = Color(0, 0, 0, 1)
+metallic_specular = 0.0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_i7141"]
 
@@ -25,7 +27,7 @@ noise = SubResource("FastNoiseLite_8t5iv")
 render_priority = 0
 shader = ExtResource("2_qfnet")
 shader_parameter/enable_grass_bending = true
-shader_parameter/enable_wind = false
+shader_parameter/enable_wind = true
 shader_parameter/enable_object_bending = false
 shader_parameter/enable_grass_cutting = false
 shader_parameter/color_small = Color(0.3, 0.6, 0.1, 1)
@@ -66,6 +68,11 @@ shader_parameter/color_ground = Color(0.295736, 0.154264, 0.000966393, 1)
 shader_parameter/patch_noise = ExtResource("4_i7141")
 shader_parameter/patch_scale = 5.0
 shader_parameter/high_frequency_noise = SubResource("NoiseTexture2D_4mrxx")
+shader_parameter/wind_noise = ExtResource("4_7r4gi")
+shader_parameter/wind_strength = 0.3
+shader_parameter/wind_speed = 0.13
+shader_parameter/wind_direction = Vector2(1, 0)
+shader_parameter/wind_ao_effect = 1.335
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wu2ud"]
 
