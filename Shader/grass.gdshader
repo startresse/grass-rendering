@@ -44,6 +44,9 @@ uniform vec3 object_position;
 uniform float cut_height = 0.5;
 varying float cut_height_;
 
+// LOD BLENDING
+instance uniform float alpha = 1.0;
+
 void vertex() {
 	mat4 inv_model = inverse(MODEL_MATRIX);
 
@@ -96,15 +99,19 @@ void fragment() {
 	{
 		AO -= current_wind_bend * wind_ao_effect;
 	}
-	AO_LIGHT_AFFECT = cut_height_;
 
 	BACKLIGHT = backlight;
 	ROUGHNESS = roughness;
 	SPECULAR = specular;
-	NORMAL = mix(NORMAL, vec3(0.0, 1.0, 0.0), bottom_to_top);
+	NORMAL = mix(NORMAL, vec3(0.0, 1.0, 0.0), mix(1.0, bottom_to_top, alpha + 0.2));
 	if (!FRONT_FACING) NORMAL = -NORMAL;
 
 	ALBEDO = mix(color_small, color_large, patch_factor);
+	
+	ALPHA = alpha;
+	ALPHA_HASH_SCALE = 1.0;
+	
+	AO_LIGHT_AFFECT = mix(0.2, cut_height, alpha);
 }
 
 //void light() {

@@ -17,6 +17,9 @@ uniform float wind_ao_effect = 1.0;
 
 uniform sampler2D baked_normals;
 
+// LOD BLENDING
+instance uniform float alpha = 1.0;
+
 varying vec3 world_vertex;
 varying float normal_to_view;
 
@@ -42,7 +45,7 @@ void fragment() {
 	float ground_factor = smoothstep(spottiness + 0.1, spottiness - 0.1, high_frequency_sample);
 	
 	ALBEDO = mix(color_small, color_large, patch_factor);
-	ALBEDO = mix(ALBEDO, color_ground, ground_factor);
+	ALBEDO = mix(ALBEDO, color_ground, clamp(ground_factor + 1.0 - alpha, 0.0, 1.0));
 	
 	float bottom_to_top_simulation = high_frequency_sample + smoothstep(0.6, 1.0, normal_to_view) * 0.4;
 	AO = mix(0.5, 1.0, bottom_to_top_simulation) - current_wind_bend * wind_ao_effect;
