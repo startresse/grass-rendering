@@ -54,9 +54,9 @@ void vertex() {
 		VERTEX.y = min(VERTEX.y, cut_height_);
 		UV.y = max(UV.y, 1.0 - cut_height_);
 	}
-	
+
 	bottom_to_top = 1.0 - UV.y;
-	
+
 	// Object bending
 	float object_distance = distance(object_position, NODE_POSITION_WORLD);
 	float bend_away_strength = object_displacement_strength * max(object_radius - object_distance, 0.0) / object_radius;
@@ -67,7 +67,7 @@ void vertex() {
 			* bend_away_strength * bottom_to_top;
 		VERTEX.y -= bend_away_strength * bottom_to_top * 0.5;
 	}
-	
+
 	// wind bending
 	vec2 wind_position = NODE_POSITION_WORLD.xz / 10.0;
 	wind_position -= TIME * wind_direction * wind_speed;
@@ -84,7 +84,7 @@ void vertex() {
 	{
 		VERTEX.z = blade_bend * pow(bottom_to_top, 2.0);
 	}
-	
+
 	patch_factor = texture(patch_noise, NODE_POSITION_WORLD.xz / patch_scale).r;
 	VERTEX *= mix(size_small, size_large, patch_factor);
 }
