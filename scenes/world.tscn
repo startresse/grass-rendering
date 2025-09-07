@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bx60fdxjp1q1j"]
+[gd_scene load_steps=20 format=3 uid="uid://bx60fdxjp1q1j"]
 
 [ext_resource type="Environment" uid="uid://kka33mpehvxe" path="res://nodes/environment.tres" id="1_71j4m"]
 [ext_resource type="Shader" uid="uid://62k14gwjvuvn" path="res://shader/ground.gdshader" id="2_i7141"]
@@ -8,6 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://o7cbkje6jceq" path="res://resources/wind_noise.tres" id="4_7r4gi"]
 [ext_resource type="Texture2D" uid="uid://bwi34bo6hgm8r" path="res://resources/patch_noise.tres" id="4_i7141"]
 [ext_resource type="MultiMesh" uid="uid://cg3jrnjjh5ufv" path="res://resources/grass_multimesh_simple.tres" id="5_7r4gi"]
+[ext_resource type="Texture2D" uid="uid://ddc3j0270de8r" path="res://resources/grass_normals_.png" id="7_7r4gi"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_8t5iv"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i7141"]
 albedo_color = Color(0, 0, 0, 1)
@@ -50,8 +53,6 @@ shader_parameter/object_displacement_strength = 3.365
 shader_parameter/object_position = Vector3(0.745147, -2.38418e-07, 0.801877)
 shader_parameter/cut_height = 0.34
 
-[sub_resource type="SphereMesh" id="SphereMesh_8t5iv"]
-
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_i7141"]
 frequency = 0.1
 
@@ -73,6 +74,7 @@ shader_parameter/wind_strength = 0.3
 shader_parameter/wind_speed = 0.13
 shader_parameter/wind_direction = Vector2(1, 0)
 shader_parameter/wind_ao_effect = 1.335
+shader_parameter/baked_normals = ExtResource("7_7r4gi")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wu2ud"]
 
@@ -86,6 +88,11 @@ transform = Transform3D(-0.925926, -0.377645, -0.00670403, -0.364389, 0.888473, 
 light_energy = 1.5
 shadow_enabled = true
 
+[node name="Sphere" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.745147, -2.38418e-07, 0.801877)
+visible = false
+mesh = SubResource("SphereMesh_8t5iv")
+
 [node name="Ground" type="MeshInstance3D" parent="."]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_i7141")
@@ -95,17 +102,107 @@ mesh = SubResource("PlaneMesh_i7141")
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
 material_override = SubResource("ShaderMaterial_1g3ni")
 cast_shadow = 0
-multimesh = ExtResource("3_i7141")
+multimesh = ExtResource("5_7r4gi")
 script = ExtResource("4_4mrxx")
 multimesh_detailed = ExtResource("3_i7141")
 multimesh_simple = ExtResource("5_7r4gi")
 
-[node name="Sphere" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.745147, -2.38418e-07, 0.801877)
-visible = false
-mesh = SubResource("SphereMesh_8t5iv")
+[node name="Ground2" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 5)
+material_override = SubResource("StandardMaterial3D_i7141")
+mesh = SubResource("PlaneMesh_i7141")
+
+[node name="Grass" type="MultiMeshInstance3D" parent="Ground2"]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_1g3ni")
+cast_shadow = 0
+multimesh = ExtResource("5_7r4gi")
+script = ExtResource("4_4mrxx")
+multimesh_detailed = ExtResource("3_i7141")
+multimesh_simple = ExtResource("5_7r4gi")
+
+[node name="Ground3" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, -5)
+material_override = SubResource("StandardMaterial3D_i7141")
+mesh = SubResource("PlaneMesh_i7141")
+
+[node name="Grass" type="MultiMeshInstance3D" parent="Ground3"]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_1g3ni")
+cast_shadow = 0
+multimesh = ExtResource("5_7r4gi")
+script = ExtResource("4_4mrxx")
+multimesh_detailed = ExtResource("3_i7141")
+multimesh_simple = ExtResource("5_7r4gi")
+
+[node name="Ground4" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, -4.91984, -0.149149, -0.0584712)
+material_override = SubResource("StandardMaterial3D_i7141")
+mesh = SubResource("PlaneMesh_i7141")
+
+[node name="Grass" type="MultiMeshInstance3D" parent="Ground4"]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_1g3ni")
+cast_shadow = 0
+multimesh = ExtResource("5_7r4gi")
+script = ExtResource("4_4mrxx")
+multimesh_detailed = ExtResource("3_i7141")
+multimesh_simple = ExtResource("5_7r4gi")
+
+[node name="Ground5" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, -5, 0, 5)
+material_override = SubResource("StandardMaterial3D_i7141")
+mesh = SubResource("PlaneMesh_i7141")
+
+[node name="Grass" type="MultiMeshInstance3D" parent="Ground5"]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_1g3ni")
+cast_shadow = 0
+multimesh = ExtResource("5_7r4gi")
+script = ExtResource("4_4mrxx")
+multimesh_detailed = ExtResource("3_i7141")
+multimesh_simple = ExtResource("5_7r4gi")
+
+[node name="Ground6" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, -5, 0, -5)
+material_override = SubResource("StandardMaterial3D_i7141")
+mesh = SubResource("PlaneMesh_i7141")
+
+[node name="Grass" type="MultiMeshInstance3D" parent="Ground6"]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_1g3ni")
+cast_shadow = 0
+multimesh = ExtResource("5_7r4gi")
+script = ExtResource("4_4mrxx")
+multimesh_detailed = ExtResource("3_i7141")
+multimesh_simple = ExtResource("5_7r4gi")
 
 [node name="Imposter" type="MeshInstance3D" parent="."]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 5, 0, 0)
+material_override = SubResource("ShaderMaterial_4mrxx")
+mesh = SubResource("PlaneMesh_wu2ud")
+
+[node name="Imposter2" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 5, 0, 5)
+material_override = SubResource("ShaderMaterial_4mrxx")
+mesh = SubResource("PlaneMesh_wu2ud")
+
+[node name="Imposter3" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 5, 0, -5)
+material_override = SubResource("ShaderMaterial_4mrxx")
+mesh = SubResource("PlaneMesh_wu2ud")
+
+[node name="Imposter4" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 10, 0, 0)
+material_override = SubResource("ShaderMaterial_4mrxx")
+mesh = SubResource("PlaneMesh_wu2ud")
+
+[node name="Imposter5" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 10, 0, 5)
+material_override = SubResource("ShaderMaterial_4mrxx")
+mesh = SubResource("PlaneMesh_wu2ud")
+
+[node name="Imposter6" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 10, 0, -5)
 material_override = SubResource("ShaderMaterial_4mrxx")
 mesh = SubResource("PlaneMesh_wu2ud")

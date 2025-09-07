@@ -48,9 +48,10 @@ void vertex() {
 	mat4 inv_model = inverse(MODEL_MATRIX);
 
 	// Cutting
-	cut_height_ = (NODE_POSITION_WORLD.x > 0.0) ? 1.0 : cut_height;
+	cut_height_ = 1.0;
 	if (enable_grass_cutting)
 	{
+		cut_height_ = (NODE_POSITION_WORLD.x > 0.0) ? 1.0 : cut_height;
 		VERTEX.y = min(VERTEX.y, cut_height_);
 		UV.y = max(UV.y, 1.0 - cut_height_);
 	}
