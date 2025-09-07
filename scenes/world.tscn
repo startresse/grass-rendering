@@ -1,83 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://bx60fdxjp1q1j"]
+[gd_scene load_steps=4 format=3 uid="uid://bx60fdxjp1q1j"]
 
 [ext_resource type="Environment" uid="uid://kka33mpehvxe" path="res://nodes/environment.tres" id="1_71j4m"]
-[ext_resource type="Shader" uid="uid://62k14gwjvuvn" path="res://shader/ground.gdshader" id="2_i7141"]
-[ext_resource type="Shader" uid="uid://s7pywmrk25qb" path="res://shader/grass.gdshader" id="2_qfnet"]
-[ext_resource type="Script" uid="uid://dtbwc0w8bc0u" path="res://scripts/impostor_alpha_set.gd" id="2_w7kh3"]
-[ext_resource type="MultiMesh" uid="uid://tlsrc3txxlgr" path="res://resources/grass_multimesh_detailed.tres" id="3_i7141"]
-[ext_resource type="Script" uid="uid://by5if8wljpkhl" path="res://scripts/grass_object_position.gd" id="4_4mrxx"]
-[ext_resource type="Texture2D" uid="uid://o7cbkje6jceq" path="res://resources/wind_noise.tres" id="4_7r4gi"]
-[ext_resource type="Texture2D" uid="uid://bwi34bo6hgm8r" path="res://resources/patch_noise.tres" id="4_i7141"]
-[ext_resource type="MultiMesh" uid="uid://cg3jrnjjh5ufv" path="res://resources/grass_multimesh_simple.tres" id="5_7r4gi"]
-[ext_resource type="Texture2D" uid="uid://ddc3j0270de8r" path="res://resources/grass_normals_.png" id="7_7r4gi"]
+[ext_resource type="Script" uid="uid://6b5b8qeksl7j" path="res://scenes/grass.gd" id="2_rwgxs"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_8t5iv"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i7141"]
-albedo_color = Color(0, 0, 0, 1)
-metallic_specular = 0.0
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_i7141"]
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_8t5iv"]
-fractal_type = 2
-fractal_gain = 0.335
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_lrus4"]
-seamless = true
-noise = SubResource("FastNoiseLite_8t5iv")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1g3ni"]
-render_priority = 0
-shader = ExtResource("2_qfnet")
-shader_parameter/enable_grass_bending = true
-shader_parameter/enable_wind = true
-shader_parameter/enable_object_bending = false
-shader_parameter/enable_grass_cutting = false
-shader_parameter/color_small = Color(0.3, 0.6, 0.1, 1)
-shader_parameter/color_large = Color(0.9, 0.9, 0.2, 1)
-shader_parameter/backlight = Color(0.2, 0.2, 0.2, 1)
-shader_parameter/size_small = 0.2
-shader_parameter/size_large = 0.6
-shader_parameter/blade_bend = 0.5
-shader_parameter/roughness = 0.4
-shader_parameter/specular = 0.2
-shader_parameter/patch_noise = ExtResource("4_i7141")
-shader_parameter/patch_scale = 5.0
-shader_parameter/wind_noise = SubResource("NoiseTexture2D_lrus4")
-shader_parameter/wind_strength = 0.3
-shader_parameter/wind_speed = 0.13
-shader_parameter/wind_direction = Vector2(1, 0)
-shader_parameter/wind_ao_effect = 1.335
-shader_parameter/object_radius = 0.75
-shader_parameter/object_displacement_strength = 3.365
-shader_parameter/object_position = Vector3(0.745147, -2.38418e-07, 0.801877)
-shader_parameter/cut_height = 0.34
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_i7141"]
-frequency = 0.1
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4mrxx"]
-seamless = true
-noise = SubResource("FastNoiseLite_i7141")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4mrxx"]
-render_priority = 0
-shader = ExtResource("2_i7141")
-shader_parameter/color_small = Color(0.3, 0.6, 0.1, 1)
-shader_parameter/color_large = Color(0.9, 0.9, 0.2, 1)
-shader_parameter/color_ground = Color(0.295736, 0.154264, 0.000966393, 1)
-shader_parameter/patch_noise = ExtResource("4_i7141")
-shader_parameter/patch_scale = 5.0
-shader_parameter/high_frequency_noise = SubResource("NoiseTexture2D_4mrxx")
-shader_parameter/wind_noise = ExtResource("4_7r4gi")
-shader_parameter/wind_strength = 0.3
-shader_parameter/wind_speed = 0.13
-shader_parameter/wind_direction = Vector2(1, 0)
-shader_parameter/wind_ao_effect = 1.335
-shader_parameter/baked_normals = ExtResource("7_7r4gi")
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_wu2ud"]
 
 [node name="World" type="Node3D"]
 
@@ -94,27 +20,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.745147, -2.38418e-07, 0.801
 visible = false
 mesh = SubResource("SphereMesh_8t5iv")
 
-[node name="GrassChunk" type="Node3D" parent="."]
-script = ExtResource("2_w7kh3")
-
-[node name="Ground" type="MeshInstance3D" parent="GrassChunk"]
-transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
-material_override = SubResource("StandardMaterial3D_i7141")
-mesh = SubResource("PlaneMesh_i7141")
-skeleton = NodePath("../..")
-
-[node name="Grass" type="MultiMeshInstance3D" parent="GrassChunk"]
-material_override = SubResource("ShaderMaterial_1g3ni")
-cast_shadow = 0
-instance_shader_parameters/alpha = 1.0
-multimesh = ExtResource("3_i7141")
-script = ExtResource("4_4mrxx")
-multimesh_detailed = ExtResource("3_i7141")
-multimesh_simple = ExtResource("5_7r4gi")
-
-[node name="Impostor" type="MeshInstance3D" parent="GrassChunk"]
-transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
-material_override = SubResource("ShaderMaterial_4mrxx")
-instance_shader_parameters/alpha = 0.0950146
-mesh = SubResource("PlaneMesh_wu2ud")
-skeleton = NodePath("../..")
+[node name="grass" type="Node3D" parent="."]
+script = ExtResource("2_rwgxs")

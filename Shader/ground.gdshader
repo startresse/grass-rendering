@@ -54,4 +54,7 @@ void fragment() {
 	BACKLIGHT = vec3(0.2);
 	ROUGHNESS = 0.4;
 	SPECULAR = 0.12;
+	
+	ALPHA = alpha;
+	ALPHA_HASH_SCALE = 1.0;
 }
