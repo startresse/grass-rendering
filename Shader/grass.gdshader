@@ -22,32 +22,54 @@ uniform float patch_scale = 5.0;
 varying float patch_factor;
 
 // WIND
+uniform bool enable_wind = true;
 uniform sampler2D wind_noise;
 uniform float wind_strength = 0.1;
+uniform float wind_speed = 0.1;
 uniform vec2 wind_direction = vec2(1.0, 0.0);
 uniform float wind_ao_effect = 1.0;
 varying float current_wind_bend;
 
-void vertex() {
-	patch_factor = texture(patch_noise, NODE_POSITION_WORLD.xz / patch_scale).r;
+// OBJECT DISPLACEMENT
+uniform float object_radius = 1.0;
+uniform float object_displacement_strength = 1.0;
+uniform vec3 object_position;
 
+void vertex() {
+	mat4 inv_model = inverse(MODEL_MATRIX);
+	patch_factor = texture(patch_noise, NODE_POSITION_WORLD.xz / patch_scale).r;
 	bottom_to_top = 1.0 - UV.y;
+	
+	// Object bending
+	float object_distance = distance(object_position, NODE_POSITION_WORLD);
+	float bend_away_strength = object_displacement_strength * max(object_radius - object_distance, 0.0) / object_radius;
+	vec2 bend_direction = normalize(object_position.xz - NODE_POSITION_WORLD.xz);
+	VERTEX.xz -= (inv_model * vec4(bend_direction.x, 0.0, bend_direction.y, 0.0)).xz
+		* bend_away_strength * bottom_to_top;
+	VERTEX.y -= bend_away_strength * bottom_to_top * 0.5;
+	
+	// wind bending
 	vec2 wind_position = NODE_POSITION_WORLD.xz / 10.0;
-	wind_position -= TIME * wind_direction * wind_strength;
+	wind_position -= TIME * wind_direction * wind_speed;
 	current_wind_bend = texture(wind_noise, wind_position).x;
 	current_wind_bend *= wind_strength;
 	current_wind_bend *= bottom_to_top * 2.0;
-	
-	mat4 inv_model = inverse(MODEL_MATRIX);
-	vec2 local_direction = (inv_model * vec4(wind_direction.x, 0.0, wind_direction.y, 0.0)).xz;
- 	VERTEX.xz += current_wind_bend * local_direction;
+	if (enable_wind)
+	{
+		vec2 local_direction = (inv_model * vec4(wind_direction.x, 0.0, wind_direction.y, 0.0)).xz;
+		VERTEX.xz += current_wind_bend * local_direction;
+	}
 
 	VERTEX.z = blade_bend * pow(bottom_to_top, 2.0);
 	VERTEX *= mix(size_small, size_large, patch_factor);
 }
 
 void fragment() {
-	AO = bottom_to_top - current_wind_bend * wind_ao_effect;
+	AO = bottom_to_top;
+	if (enable_wind)
+	{
+		AO -= current_wind_bend * wind_ao_effect;
+	}
 	AO_LIGHT_AFFECT = 1.0;
 
 	BACKLIGHT = backlight;
